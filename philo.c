@@ -6,25 +6,41 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/04/20 17:00:37 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/04/21 15:49:27 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*thread_1(void *arg)
+void	check_argc(int argc)
 {
-	(void)arg;
-	printf("Nous sommes dans le thread.\n");
-	pthread_exit(EXIT_SUCCESS);
+	if (argc > 7)
+	{
+		ft_printf("(Error) Too much arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	else if (argc < 5)
+	{
+		ft_printf("(Error) Too few arguments\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
-int	main(void)
+void	check_args(char **argv)
 {
-	pthread_t	thread1;
+	(void)argv;
+}
 
-	printf("Avant la création du thread.\n");
-	pthread_create(&thread1, NULL, thread_1, NULL);
-	printf("Après la création du thread.\n");
+int	main(int argc, char **argv)
+{
+	// struct t_mutex	dictateur;
+	// struct t_mutex	fourchettes;
+
+	check_argc(argc);
+	check_args(argv);
 	return (EXIT_SUCCESS);
 }
+
+// pthread_create : creer le thread
+// pthread_join : attendre la fin de l'execution du thread
+// pthread_exit : quitter le thread proprement

@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/04/21 15:48:45 by mreymond         ###   ########.fr       */
+/*   Created: 2021/11/17 16:13:12 by mreymond          #+#    #+#             */
+/*   Updated: 2021/12/08 16:07:42 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
+# include <limits.h>
 # include <unistd.h>
-# include <stdio.h>
+# include <stdarg.h>
 # include <stdlib.h>
-# include <string.h>
-# include <sys/time.h>
-# include <pthread.h>
-# include "printf/ft_printf.h"
 
-typedef struct t_mutex {
-	int				data;
-	pthread_mutex_t	mutex;
-}	t_mutex;
+int	ft_printf(const char *str, ...);
+int	write_argument(char argument, va_list ap);
+int	ft_putnbrwrite(int n);
+int	ft_putnbr(int n);
+int	ft_putchar(char c);
+int	ft_putstr(char *s);
+int	ft_hexwrite(size_t hexa, char lettre, char *str);
+int	ft_puthexa(unsigned int hexa, char lettre);
+int	ft_putunsigned(int s);
+int	ft_putadresse(size_t adresse);
 
 #endif
