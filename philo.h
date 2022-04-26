@@ -29,7 +29,12 @@ typedef struct s_philo {
 	pthread_mutex_t	fork2;
 }	t_philo;
 
-// données de bases
+// données de bases:
+// number_of_philosophers
+// time_to_die
+// time_to_eat
+// time_to_sleep
+// [number_of_times_each_philosopher_must_eat]
 typedef struct s_data {
 	unsigned int	nbr_philo;
 	unsigned int	t_die;
