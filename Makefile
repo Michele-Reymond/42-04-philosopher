@@ -6,12 +6,17 @@
 #    By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/20 16:45:53 by mreymond          #+#    #+#              #
-#    Updated: 2022/04/21 15:46:38 by mreymond         ###   ########.fr        #
+#    Updated: 2022/04/26 16:27:20 by mreymond         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-SRCS		= 	philo.c
+SRCS		= 	philo.c \
+				philo_errors.c \
+				philo_init.c \
+				ft_atoi.c \
+				ft_isdigit.c \
+				ft_strlen.c
 
 OBJS		= $(SRCS:.c=.o)
 CC			= gcc
@@ -27,7 +32,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) $(OBJS) -lpthread -L $(PRINTF_PATH) -lftprintf -o $(NAME)
 
 run:	
-			./$(NAME) 5 800 200 200
+			./$(NAME) 5 3423424234234 200 200
 
 clean:
 			$(RM) $(OBJS)
@@ -39,3 +44,10 @@ fclean:		clean
 re:			fclean all
 
 .PHONY:		all clean fclean re run
+
+# FONCTIONE AUTORISEES
+# memset, printf, malloc, free, write,
+# usleep, gettimeofday, pthread_create,
+# pthread_detach, pthread_join, pthread_mutex_init,
+# pthread_mutex_destroy, pthread_mutex_lock,
+# pthread_mutex_unlock

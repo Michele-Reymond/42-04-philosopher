@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/04/26 16:25:18 by mreymond         ###   ########.fr       */
+/*   Created: 2022/04/26 16:24:52 by mreymond          #+#    #+#             */
+/*   Updated: 2022/04/26 16:25:12 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+int	args_to_data(int argc, char **argv, t_data *data)
 {
-	// struct s_philo	*philo;
-	struct s_data	data;
-
-	if (check_argc(argc))
-		return (EXIT_FAILURE);
-	else if (args_to_data(argc, argv, &data))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	if (check_args(argc, argv))
+		return (1);
+	data = (t_data *)malloc(sizeof(t_data));
+	data->nbr_philo = ft_atoi(argv[1]);
+	data->t_die = ft_atoi(argv[2]);
+	data->t_eat = ft_atoi(argv[3]);
+	data->t_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		data->must_eat = ft_atoi(argv[5]);
+	else
+		data->must_eat = 0;
+	return (0);
 }
-
-// pthread_create : creer le thread
-// pthread_join : attendre la fin de l'execution du thread
-// pthread_exit : quitter le thread proprement

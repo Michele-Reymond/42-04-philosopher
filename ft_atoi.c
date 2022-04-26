@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/04/26 16:25:18 by mreymond         ###   ########.fr       */
+/*   Created: 2021/10/20 17:04:39 by mreymond          #+#    #+#             */
+/*   Updated: 2022/04/26 15:35:45 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo.h" 
 
-int	main(int argc, char **argv)
+int	ft_atoi(const char *str)
 {
-	// struct s_philo	*philo;
-	struct s_data	data;
+	int			i;
+	int			num;
+	long int	temp;
 
-	if (check_argc(argc))
-		return (EXIT_FAILURE);
-	else if (args_to_data(argc, argv, &data))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	i = 0;
+	temp = 0;
+	num = 1;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '-')
+		num = num * -1;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		temp = temp * 10 + (str[i] - 48);
+		i++;
+	}
+	temp = temp * num;
+	return (temp);
 }
-
-// pthread_create : creer le thread
-// pthread_join : attendre la fin de l'execution du thread
-// pthread_exit : quitter le thread proprement
