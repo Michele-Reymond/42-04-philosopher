@@ -25,10 +25,20 @@ int	main(int argc, char **argv)
 	philo = malloc(sizeof(t_philo) * data->nbr_philo);
 	if (philo_init(data, philo))
 		return (EXIT_FAILURE);
+	unsigned int i = 0;
+	while (i < data->nbr_philo)
+	{
+		if (i == 0)
+			philo[i]->l_fork = philo[data->nbr_philo - 1]->r_fork;
+		else
+			philo[i]->l_fork = philo[i - 1]->r_fork;
+		i++;
+	}
 	for (unsigned int i = 0; i < data->nbr_philo; i++) {
 		pthread_join(data->threads[i], NULL);
 		pthread_mutex_destroy(&philo[i]->r_fork);
 	}
+	datafree(data, philo);
 	return (EXIT_SUCCESS);
 
 }

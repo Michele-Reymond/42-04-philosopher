@@ -55,6 +55,7 @@ int		check_args(int argc, char **argv);
 int		check_errors(int argc, char **argv);
 void	*test(void *arg);
 int		philo_init(t_data *data, t_philo **philo);
+void	datafree(t_data *data, t_philo **philo);
 
 #endif
 

@@ -32,7 +32,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) $(OBJS) -lpthread -L $(PRINTF_PATH) -lftprintf -o $(NAME)
 
 run:	
-			./$(NAME) 8 800 200 200
+			./$(NAME) 3 800 200 200
 
 clean:
 			$(RM) $(OBJS)

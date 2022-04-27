@@ -14,8 +14,21 @@
 
 void *test(void *arg)
 {
-	(void)arg;
-	ft_printf("Coucou\n");
+	t_philo *philo = (t_philo*) arg;
+
+	pthread_mutex_lock(&(*philo).r_fork);
+	write(1, "Philosopher took is right fork\n", 31);
+	pthread_mutex_lock(&(*philo).l_fork);
+	write(1, "Philosopher took is left fork\n", 31);
+	write(1, "Philosopher is eating\n", 22);
+
+	// Dévérouillage du mutex
+	pthread_mutex_unlock(&(*philo).r_fork);
+	pthread_mutex_unlock(&(*philo).l_fork);
+
+	// Pause l'exécution du thread pendant 1 seconde
+	sleep(1);
+
 	pthread_exit(EXIT_SUCCESS);
 }
 
@@ -45,21 +58,25 @@ int	philo_init(t_data *data, t_philo **philo)
 		philo[i] = malloc(sizeof(t_philo));
 		philo[i]->id = i;
 		philo[i]->last_meal = 0;
-		if (pthread_mutex_init(&philo[i]->r_fork, NULL) != 0) {
-			ft_printf("(Error) Mutex init failed\n");
+		if (pthread_mutex_init(&philo[i]->r_fork, NULL) != 0)
 			return (1);
-		}
-		i++;
-	}
-	i = 0;
-	while (i < data->nbr_philo)
-	{
-		if (pthread_create(&data->threads[i], NULL, test, &philo[i])!= 0) {
-			ft_printf("Echec de la création du thread: [%u]", i);
+		if (pthread_create(&data->threads[i], NULL, test, &philo[i])!= 0)
 			return (1);
-		}
-		ft_printf("Création du thread numéro %u\n", i);
 		i++;
 	}
 	return (0);
+}
+
+void	datafree(t_data *data, t_philo **philo)
+{
+	unsigned int i;
+
+	i = 0;
+	while (i < data->nbr_philo)
+	{
+		free(philo[i]);
+		i++;
+	}
+	free(philo);
+	free(data);
 }
