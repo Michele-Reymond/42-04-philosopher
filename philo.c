@@ -14,14 +14,23 @@
 
 int	main(int argc, char **argv)
 {
-	// struct s_philo	*philo;
-	struct s_data	data;
+	t_data	*data;
+	t_philo **philo;
 
+	data = malloc(sizeof(t_data));
 	if (check_argc(argc))
 		return (EXIT_FAILURE);
-	else if (args_to_data(argc, argv, &data))
+	if (args_to_data(argc, argv, data))
 		return (EXIT_FAILURE);
+	philo = malloc(sizeof(t_philo) * data->nbr_philo);
+	if (philo_init(data, philo))
+		return (EXIT_FAILURE);
+	for (unsigned int i = 0; i < data->nbr_philo; i++) {
+		pthread_join(data->threads[i], NULL);
+		pthread_mutex_destroy(&philo[i]->r_fork);
+	}
 	return (EXIT_SUCCESS);
+
 }
 
 // pthread_create : creer le thread

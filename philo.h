@@ -25,8 +25,8 @@
 typedef struct s_philo {
 	int				id;
 	int				last_meal;
-	pthread_mutex_t	fork1;
-	pthread_mutex_t	fork2;
+	pthread_mutex_t	r_fork;
+	pthread_mutex_t	l_fork;
 }	t_philo;
 
 // données de bases:
@@ -41,6 +41,7 @@ typedef struct s_data {
 	unsigned int	t_eat;
 	unsigned int	t_sleep;
 	unsigned int	must_eat;
+	pthread_t		*threads;
 }	t_data;
 
 int		ft_isdigit(int d);
@@ -52,5 +53,10 @@ int		args_is_digit(int argc, char **argv);
 int		args_max_min(int argc, char **argv);
 int		check_args(int argc, char **argv);
 int		check_errors(int argc, char **argv);
+void	*test(void *arg);
+int		philo_init(t_data *data, t_philo **philo);
 
 #endif
+
+// MALLOC
+// dans la fonction args_to_data
