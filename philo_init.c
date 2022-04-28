@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void *test(void *arg)
+void *try_to_eat(void *arg)
 {
 	t_philo *philo = (t_philo*) arg;
 
@@ -27,7 +27,7 @@ void *test(void *arg)
 	pthread_mutex_unlock(&(*philo).l_fork);
 
 	// Pause l'exécution du thread pendant 1 seconde
-	sleep(1);
+	usleep(10);
 
 	pthread_exit(EXIT_SUCCESS);
 }
@@ -47,12 +47,26 @@ int	args_to_data(int argc, char **argv, t_data *data)
 	return (0);
 }
 
+void timer_on(void)
+{
+	struct timeval	time;
+	long int		starting_time;
+
+	gettimeofday(&time, NULL);
+	starting_time = (time.tv_usec * (1.0/1000000)) + time.tv_sec;
+	printf("%d\n", time.tv_usec);
+	printf("%ld\n", time.tv_sec);
+	printf("%f\n", time.tv_usec * (1.0/1000000));
+	printf("%ld\n", starting_time);
+}
+
 int	philo_init(t_data *data, t_philo **philo)
 {
 	unsigned int i;
 
 	i = 0;
 	data->threads = malloc(sizeof(pthread_t) * data->nbr_philo);
+	timer_on();
 	while (i < data->nbr_philo)
 	{
 		philo[i] = malloc(sizeof(t_philo));
@@ -60,7 +74,7 @@ int	philo_init(t_data *data, t_philo **philo)
 		philo[i]->last_meal = 0;
 		if (pthread_mutex_init(&philo[i]->r_fork, NULL) != 0)
 			return (1);
-		if (pthread_create(&data->threads[i], NULL, test, &philo[i])!= 0)
+		if (pthread_create(&data->threads[i], NULL, try_to_eat, &philo[i])!= 0)
 			return (1);
 		i++;
 	}
@@ -80,3 +94,4 @@ void	datafree(t_data *data, t_philo **philo)
 	free(philo);
 	free(data);
 }
+

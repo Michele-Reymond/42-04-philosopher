@@ -27,7 +27,7 @@ typedef struct s_philo {
 	int				last_meal;
 	pthread_mutex_t	r_fork;
 	pthread_mutex_t	l_fork;
-}	t_philo;
+}	t_philo; 	
 
 // données de bases:
 // number_of_philosophers

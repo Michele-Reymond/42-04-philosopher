@@ -20,7 +20,7 @@ SRCS		= 	philo.c \
 
 OBJS		= $(SRCS:.c=.o)
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra #-g -fsanitize=address
+CFLAGS		= -Wall -Werror -Wextra -g #-fsanitize=address
 NAME		= philo
 RM			= rm -f
 PRINTF_PATH	= printf
