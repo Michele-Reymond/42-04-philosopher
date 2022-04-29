@@ -21,14 +21,6 @@
 # include <pthread.h>
 # include "printf/ft_printf.h"
 
-// philosophes
-typedef struct s_philo {
-	int				id;
-	int				last_meal;
-	pthread_mutex_t	r_fork;
-	pthread_mutex_t	l_fork;
-}	t_philo; 	
-
 // données de bases:
 // number_of_philosophers
 // time_to_die
@@ -41,8 +33,19 @@ typedef struct s_data {
 	unsigned int	t_eat;
 	unsigned int	t_sleep;
 	unsigned int	must_eat;
+	long int		start_time;
 	pthread_t		*threads;
 }	t_data;
+
+// philosophes
+typedef struct s_philo {
+	int				id;
+	int				last_meal;
+	pthread_mutex_t	r_fork;
+	pthread_mutex_t	l_fork;
+	t_data			*data;
+}	t_philo; 	
+
 
 int		ft_isdigit(int d);
 int		ft_atoi(const char *str);
@@ -54,8 +57,9 @@ int		args_max_min(int argc, char **argv);
 int		check_args(int argc, char **argv);
 int		check_errors(int argc, char **argv);
 void	*test(void *arg);
-int		philo_init(t_data *data, t_philo **philo);
-void	datafree(t_data *data, t_philo **philo);
+int		philo_init(t_data *data, t_philo *philo);
+void	datafree(t_data *data, t_philo *philo);
+void	actual_time(long int start_time);
 
 #endif
 

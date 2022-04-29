@@ -15,7 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_data	*data;
-	t_philo **philo;
+	t_philo *philo;
 
 	data = malloc(sizeof(t_data));
 	if (check_argc(argc))
@@ -29,14 +29,14 @@ int	main(int argc, char **argv)
 	while (i < data->nbr_philo)
 	{
 		if (i == 0)
-			philo[i]->l_fork = philo[data->nbr_philo - 1]->r_fork;
+			philo[i].l_fork = philo[data->nbr_philo - 1].r_fork;
 		else
-			philo[i]->l_fork = philo[i - 1]->r_fork;
+			philo[i].l_fork = philo[i - 1].r_fork;
 		i++;
 	}
-	for (unsigned int i = 0; i < data->nbr_philo; i++) {
+	for (unsigned int i = 0; i < data->nbr_philo - 1; i++) {
 		pthread_join(data->threads[i], NULL);
-		pthread_mutex_destroy(&philo[i]->r_fork);
+		pthread_mutex_destroy(&philo[i].r_fork);
 	}
 	datafree(data, philo);
 	return (EXIT_SUCCESS);

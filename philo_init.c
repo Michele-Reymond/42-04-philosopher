@@ -14,7 +14,7 @@
 
 void *try_to_eat(void *arg)
 {
-	t_philo *philo = (t_philo*) arg;
+	t_philo *philo = (t_philo *) arg;
 
 	pthread_mutex_lock(&(*philo).r_fork);
 	write(1, "Philosopher took is right fork\n", 31);
@@ -47,50 +47,57 @@ int	args_to_data(int argc, char **argv, t_data *data)
 	return (0);
 }
 
-void timer_on(void)
+void timer_start(t_data *data)
 {
 	struct timeval	time;
-	long int		starting_time;
 
 	gettimeofday(&time, NULL);
-	starting_time = (time.tv_usec * (1.0/1000000)) + time.tv_sec;
-	printf("%d\n", time.tv_usec);
-	printf("%ld\n", time.tv_sec);
-	printf("%f\n", time.tv_usec * (1.0/1000000));
-	printf("%ld\n", starting_time);
+	data->start_time = time.tv_usec + time.tv_sec * 1000000;
 }
 
-int	philo_init(t_data *data, t_philo **philo)
+void	actual_time(long int start_time)
+{
+	struct timeval	time;
+	long int	time_now;
+
+	gettimeofday(&time, NULL);
+	time_now = ((time.tv_usec + time.tv_sec * 1000000) - start_time) / 1000;
+	printf("ici: %ld\n", time_now);
+}
+
+int	philo_init(t_data *data, t_philo *philo)
 {
 	unsigned int i;
 
 	i = 0;
 	data->threads = malloc(sizeof(pthread_t) * data->nbr_philo);
-	timer_on();
+	timer_start(data);
 	while (i < data->nbr_philo)
 	{
-		philo[i] = malloc(sizeof(t_philo));
-		philo[i]->id = i;
-		philo[i]->last_meal = 0;
-		if (pthread_mutex_init(&philo[i]->r_fork, NULL) != 0)
+		// philo[i] = malloc(sizeof(t_philo));
+		philo[i].id = i;
+		philo[i].last_meal = 0;
+		philo[i].data = data;
+		if (pthread_mutex_init(&philo[i].r_fork, NULL) != 0)
 			return (1);
-		if (pthread_create(&data->threads[i], NULL, try_to_eat, &philo[i])!= 0)
+		if (pthread_create(&data->threads[i], NULL, try_to_eat, &philo[i]) != 0)
 			return (1);
 		i++;
 	}
+	actual_time(data->start_time);
 	return (0);
 }
 
-void	datafree(t_data *data, t_philo **philo)
+void	datafree(t_data *data, t_philo *philo)
 {
-	unsigned int i;
+	// unsigned int i;
 
-	i = 0;
-	while (i < data->nbr_philo)
-	{
-		free(philo[i]);
-		i++;
-	}
+	// i = 0;
+	// while (i < data->nbr_philo)
+	// {
+	// 	free(philo[i]);
+	// 	i++;
+	// }
 	free(philo);
 	free(data);
 }
