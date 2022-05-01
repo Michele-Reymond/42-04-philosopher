@@ -34,7 +34,6 @@ typedef struct s_data {
 	unsigned int	t_sleep;
 	unsigned int	must_eat;
 	long int		start_time;
-	pthread_t		*threads;
 }	t_data;
 
 // philosophes
@@ -43,12 +42,15 @@ typedef struct s_philo {
 	int				last_meal;
 	pthread_mutex_t	r_fork;
 	pthread_mutex_t	l_fork;
+	pthread_mutex_t	message;
+	pthread_t		thread;
 	t_data			*data;
-}	t_philo; 	
+}	t_philo;
 
 
 int		ft_isdigit(int d);
 int		ft_atoi(const char *str);
+char	*ft_itoa(int n);
 size_t	ft_strlen(const char *str);
 int		args_to_data(int argc, char **argv, t_data *data);
 int		check_argc(int argc);
@@ -59,7 +61,7 @@ int		check_errors(int argc, char **argv);
 void	*test(void *arg);
 int		philo_init(t_data *data, t_philo *philo);
 void	datafree(t_data *data, t_philo *philo);
-void	actual_time(long int start_time);
+char	*actual_time(long int start_time);
 
 #endif
 

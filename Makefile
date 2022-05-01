@@ -15,6 +15,7 @@ SRCS		= 	philo.c \
 				philo_errors.c \
 				philo_init.c \
 				ft_atoi.c \
+				ft_itoa.c \
 				ft_isdigit.c \
 				ft_strlen.c
 

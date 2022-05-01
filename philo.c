@@ -14,31 +14,22 @@
 
 int	main(int argc, char **argv)
 {
-	t_data	*data;
+	t_data	data;
 	t_philo *philo;
 
-	data = malloc(sizeof(t_data));
 	if (check_argc(argc))
 		return (EXIT_FAILURE);
-	if (args_to_data(argc, argv, data))
+	if (args_to_data(argc, argv, &data))
 		return (EXIT_FAILURE);
-	philo = malloc(sizeof(t_philo) * data->nbr_philo);
-	if (philo_init(data, philo))
+	philo = malloc(sizeof(t_philo) * data.nbr_philo);
+	if (philo_init(&data, philo))
 		return (EXIT_FAILURE);
-	unsigned int i = 0;
-	while (i < data->nbr_philo)
-	{
-		if (i == 0)
-			philo[i].l_fork = philo[data->nbr_philo - 1].r_fork;
-		else
-			philo[i].l_fork = philo[i - 1].r_fork;
-		i++;
-	}
-	for (unsigned int i = 0; i < data->nbr_philo - 1; i++) {
-		pthread_join(data->threads[i], NULL);
+	for (unsigned int i = 0; i < data.nbr_philo; i++) {
+		pthread_join(philo[i].thread, NULL);
 		pthread_mutex_destroy(&philo[i].r_fork);
 	}
-	datafree(data, philo);
+	// datafree(&data, philo);
+	free(philo);
 	return (EXIT_SUCCESS);
 
 }
