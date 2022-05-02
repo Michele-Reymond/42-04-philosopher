@@ -206,8 +206,26 @@ int	philo_init(t_data *data, t_philo *philo)
 			philo[i].l_fork = philo[data->nbr_philo - 1].r_fork;
 		else
 			philo[i].l_fork = philo[i - 1].r_fork;
-		if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
-			return (1);
+		i++;
+	}
+	i = 0;
+	while (i < data->nbr_philo)
+	{
+		if (philo->id % 2 == 0)
+		{
+			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
+				return (1);		
+		}
+		i++;
+	}
+	i = 0;
+	while (i < data->nbr_philo)
+	{
+		if (philo->id % 2 != 0)
+		{
+			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
+				return (1);		
+		}
 		i++;
 	}
 	return (0);
