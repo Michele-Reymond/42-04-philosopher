@@ -6,7 +6,7 @@
 #    By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/20 16:45:53 by mreymond          #+#    #+#              #
-#    Updated: 2022/04/26 16:27:20 by mreymond         ###   ########.fr        #
+#    Updated: 2022/05/02 18:29:35 by mreymond         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) $(OBJS) -lpthread -L $(PRINTF_PATH) -lftprintf -o $(NAME)
 
 run:	
-			./$(NAME) 3 800 200 200
+			./$(NAME) 3 800 200 200 3
 
 clean:
 			$(RM) $(OBJS)
@@ -52,3 +52,7 @@ re:			fclean all
 # pthread_detach, pthread_join, pthread_mutex_init,
 # pthread_mutex_destroy, pthread_mutex_lock,
 # pthread_mutex_unlock
+
+last meal : 204
+time to die : 800
+time of meal : 900

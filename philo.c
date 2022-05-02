@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/04/26 16:25:18 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/02 16:56:34 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
-	t_philo *philo;
+	t_data			data;
+	t_philo			*philo;
+	unsigned int	i;
 
+	i = 0;
 	if (check_argc(argc))
 		return (EXIT_FAILURE);
 	if (args_to_data(argc, argv, &data))
@@ -24,16 +26,14 @@ int	main(int argc, char **argv)
 	philo = malloc(sizeof(t_philo) * data.nbr_philo);
 	if (philo_init(&data, philo))
 		return (EXIT_FAILURE);
-	for (unsigned int i = 0; i < data.nbr_philo; i++) {
+	if (philo_routine(&data, philo))
+		return (EXIT_FAILURE);
+	while (i < data.nbr_philo)
+	{
 		pthread_join(philo[i].thread, NULL);
 		pthread_mutex_destroy(&philo[i].r_fork);
+		i++;
 	}
-	// datafree(&data, philo);
 	free(philo);
 	return (EXIT_SUCCESS);
-
 }
-
-// pthread_create : creer le thread
-// pthread_join : attendre la fin de l'execution du thread
-// pthread_exit : quitter le thread proprement
