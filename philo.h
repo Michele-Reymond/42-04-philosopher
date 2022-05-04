@@ -34,8 +34,9 @@ typedef struct s_data {
 	unsigned int	t_eat;
 	unsigned int	t_sleep;
 	unsigned int	must_eat;
-	unsigned int	meals_eaten;
+	unsigned int	philo_ate_all_meals;
 	long int		start_time;
+	int				*philo_order;
 	pthread_mutex_t	message;
 }	t_data;
 
@@ -43,6 +44,7 @@ typedef struct s_data {
 typedef struct s_philo {
 	int				id;
 	long int		last_meal;
+	unsigned int	meals_eaten;
 	pthread_mutex_t	r_fork;
 	pthread_mutex_t	l_fork;
 	pthread_t		thread;

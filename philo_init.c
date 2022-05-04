@@ -33,17 +33,20 @@ char	*time_str(long int start_time)
 int	is_dead(t_data *data, t_philo *philo)
 {
 	char	*id;
-	int long time;
-	int long	time2;
+	long int	time;
+	char *eat_time;
+
+	time = time_of_meal(data->start_time);
 
 	id = ft_itoa(philo->id);
-	time = philo->last_meal + data->t_die;
-	time2 = time_of_meal(data->start_time);
-	if (time_of_meal(data->start_time) - philo->last_meal > data->t_die)
+	if (time - philo->last_meal > data->t_die / 100)
 	{
 		philo->alive = false;
-		write(1, id, ft_strlen(id));
+		eat_time = time_str(philo->data->start_time);
+		write(1, eat_time, ft_strlen(eat_time));
 		write(1, " philo dead here!!!\n", 19);
+		write(1, id, ft_strlen(id));
+		exit(0);
 		return (1);
 	}
 	return (0);
@@ -51,9 +54,10 @@ int	is_dead(t_data *data, t_philo *philo)
 
 int	all_meals_eaten(t_data *data)
 {
-	if (data->meals_eaten > data->must_eat)
+	if (data->philo_ate_all_meals >= data->nbr_philo)
 	{
 		write(1, "All meals eaten!!!\n", 19);
+		exit(0);
 		return (1);
 	}
 	return (0);
@@ -63,22 +67,54 @@ int	philo_routine(t_data *data, t_philo *philo)
 {
 	while (1)
 	{
-		eat(philo);
-		if (all_meals_eaten(data) || is_dead(data, philo))
+		if (data->philo_order[0] == philo->id) 
+			eat(philo);
+		else
+			usleep(10);
+		if (all_meals_eaten(data))
+			return (1);
+		if (is_dead(data, philo))
 			return (1);
 		sleep_now(philo);
-		if (all_meals_eaten(data) || is_dead(data, philo))
+		if (all_meals_eaten(data))
+			return (1);
+		if (is_dead(data, philo))
 			return (1);
 		think(philo);
-		if (all_meals_eaten(data) || is_dead(data, philo))
+		if (all_meals_eaten(data))
+			return (1);
+		if (is_dead(data, philo))
 			return (1);
 	}
 	return (0);
 }
 
+void	update_order(int *order, int id, unsigned int nbr_p)
+{
+	unsigned int i;
+	int	tmp;
+
+	i = 0;
+	tmp = order[nbr_p - 1];
+	while (i < nbr_p)
+	{
+		if (order[i] == id)
+			break ;
+		i++;
+	}
+	order[nbr_p - 1] = order[i];
+	while (i < nbr_p - 2)
+	{
+		order[i] = order[i + 1];
+		i++;
+	}
+	order[i] = tmp;
+}
+
 void	eat(t_philo *philo)
 {
 	char	*id;
+	char	*eaten;
 	char	*time;
 	char	*eat_time;
 
@@ -96,14 +132,22 @@ void	eat(t_philo *philo)
 	write(1, eat_time, ft_strlen(eat_time));
 	write(1, "	Philosopher n° ", 16);
 	write(1, id, ft_strlen(id));
-	write(1, "	 is eating\n", 12);
-	philo->data->meals_eaten += 1;
+	write(1, "	 is eating", 12);
+	write(1, "	 for the ", 10);
+	update_order(philo->data->philo_order, philo->id, philo->data->nbr_philo);
+	philo->meals_eaten += 1;
+	eaten = ft_itoa(philo->meals_eaten);
+	write(1, eaten, ft_strlen(eaten));
+	write(1, " meal\n", 6);
+	if (philo->meals_eaten == philo->data->must_eat)
+		philo->data->philo_ate_all_meals += 1;
 	usleep(philo->data->t_eat);
 	pthread_mutex_unlock(&philo->l_fork);
 	pthread_mutex_unlock(&philo->r_fork);
 	pthread_mutex_unlock(&philo->data->message);
 	free(id);
 	free(time);
+	free(eaten);
 	free(eat_time);
 	usleep(10);
 }
@@ -163,7 +207,8 @@ int	args_to_data(int argc, char **argv, t_data *data)
 	data->t_die = ft_atoi(argv[2]) * 1000;
 	data->t_eat = ft_atoi(argv[3]) * 1000;
 	data->t_sleep = ft_atoi(argv[4]) * 1000;
-	data->meals_eaten = 0;
+	data->philo_ate_all_meals = 0;
+	data->philo_order = malloc(sizeof(int) * data->nbr_philo);
 	if (pthread_mutex_init(&data->message, NULL) != 0)
 		return (1);
 	if (argc == 6)
@@ -195,6 +240,8 @@ int	philo_init(t_data *data, t_philo *philo)
 		philo[i].last_meal = 0;
 		philo[i].alive = true;
 		philo[i].data = data;
+		philo[i].data->philo_order[i] = philo[i].id;
+		philo[i].meals_eaten = 0;
 		if (pthread_mutex_init(&philo[i].r_fork, NULL) != 0)
 			return (1);
 		i++;
@@ -223,6 +270,7 @@ int	philo_init(t_data *data, t_philo *philo)
 	{
 		if (philo->id % 2 != 0)
 		{
+		
 			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
 				return (1);		
 		}
