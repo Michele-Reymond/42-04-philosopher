@@ -6,7 +6,7 @@
 #    By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/20 16:45:53 by mreymond          #+#    #+#              #
-#    Updated: 2022/05/02 18:29:35 by mreymond         ###   ########.fr        #
+#    Updated: 2022/05/04 23:08:09 by mreymond         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,9 @@
 SRCS		= 	philo.c \
 				philo_errors.c \
 				philo_init.c \
+				philo_utils.c \
+				philo_actions.c \
+				philo_stop.c \
 				ft_atoi.c \
 				ft_itoa.c \
 				ft_isdigit.c \
@@ -33,7 +36,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) $(OBJS) -lpthread -L $(PRINTF_PATH) -lftprintf -o $(NAME)
 
 run:	
-			./$(NAME) 5 800 200 200
+			./$(NAME) 4 300 200 200
 
 clean:
 			$(RM) $(OBJS)

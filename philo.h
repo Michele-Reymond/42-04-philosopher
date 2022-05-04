@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/02 18:16:11 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/04 22:59:30 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,22 @@
 # include <stdbool.h>
 # include "printf/ft_printf.h"
 
-// données de bases:
-// number_of_philosophers
-// time_to_die
-// time_to_eat
-// time_to_sleep
-// [number_of_times_each_philosopher_must_eat]
+# define CYAN		"\033[0;36m"
+# define GREEN		"\033[0;32m"
+# define DEFAULT	"\033[0m"
+# define RED		"\033[0;31m"
+# define ORANGE		"\033[0;33m"
+
+# define PHILO		" 	Philo n°"
+# define TOOK_FORK	" 	took both fork\n"
+# define EAT		" 	is eating his "
+# define MEALS		" meal\n"
+# define THINK		" 	is thinking\n"
+# define SLEEP		" 	is sleeping\n"
+# define DEAD		" 	Oops it appear that this philo is dead!\n"
+# define ALL_ATED	"All the Philos ated "
+# define LEAVE		" meals and they leave!\n"
+
 typedef struct s_data {
 	unsigned int	nbr_philo;
 	unsigned int	t_die;
@@ -73,6 +83,10 @@ void		eat(t_philo *philo);
 void		think(t_philo *philo);
 void		sleep_now(t_philo *philo);
 void		take_forks(t_philo *philo);
+int			all_meals_eaten(t_data *data);
+int			is_dead(t_data *data, t_philo *philo);
+void		timer_start(t_data *data);
+void		update_order(int *order, int id, unsigned int nbr_p);
 
 #endif
 
