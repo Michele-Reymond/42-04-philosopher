@@ -56,16 +56,17 @@ int	is_dead(t_data *data, t_philo *philo)
 	time = time_of_meal(data->start_time);
 
 	id = ft_itoa(philo->id);
-	if (time - philo->last_meal > data->t_die / 1000)
+	if (time - philo->last_meal > data->t_die)
 	{
 		philo->alive = false;
+		data->all_alive = false;
 		eat_time = time_str(philo->data->start_time);
 		pthread_mutex_lock(&philo->data->message);
 		write(1, eat_time, ft_strlen(eat_time));
-		write(1, " philo dead here!!!\n", 19);
+		write(1, " philo dead here!!!  ", 21);
 		write(1, id, ft_strlen(id));
+		write(1, "\n", 1);
 		pthread_mutex_unlock(&philo->data->message);
-		exit(0);
 		return (1);
 	}
 	return (0);
@@ -73,10 +74,12 @@ int	is_dead(t_data *data, t_philo *philo)
 
 int	all_meals_eaten(t_data *data)
 {
-	if (data->philo_ate_all_meals >= data->nbr_philo)
+	if (data->philo_ate_all_meals == data->nbr_philo)
 	{
+		data->philo_ate_all_meals += 1;
+		pthread_mutex_lock(&(data->message));
 		write(1, "All meals eaten!!!\n", 19);
-		exit(0);
+		pthread_mutex_unlock(&(data->message));
 		return (1);
 	}
 	return (0);
@@ -86,19 +89,27 @@ int	philo_routine(t_data *data, t_philo *philo)
 {
 	while (1)
 	{
-		if (data->philo_order[data->nbr_philo - 1] != philo->id) 
+		if (data->philo_order[data->nbr_philo - 1] != philo->id && data->all_alive == true) 
 		{
 			take_forks(philo);
 			eat(philo);
 		}
-		if (all_meals_eaten(data) || is_dead(data, philo))
+		if (data->all_alive == false || all_meals_eaten(data) || is_dead(data, philo) || data->philo_ate_all_meals > data->nbr_philo)
+		{
 			return (1);
-		sleep_now(philo);
-		if (all_meals_eaten(data) || is_dead(data, philo))
+		}
+		if (data->all_alive == true) 
+			sleep_now(philo);
+		if (data->all_alive == false || all_meals_eaten(data) || is_dead(data, philo) || data->philo_ate_all_meals > data->nbr_philo)
+		{
 			return (1);
-		think(philo);
-		if (all_meals_eaten(data) || is_dead(data, philo))
+		}
+		if (data->all_alive == true) 
+			think(philo);
+		if (data->all_alive == false || all_meals_eaten(data) || is_dead(data, philo) || data->philo_ate_all_meals > data->nbr_philo)
+		{
 			return (1);
+		}
 		usleep(10);
 	}
 	return (0);
@@ -220,9 +231,8 @@ void	*try_to_eat(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
-	if (philo_routine(data, philo))
-		pthread_exit(EXIT_SUCCESS);
-	pthread_exit(EXIT_SUCCESS);
+	philo_routine(data, philo);
+	return (NULL);
 }
 
 int	args_to_data(int argc, char **argv, t_data *data)
@@ -230,10 +240,11 @@ int	args_to_data(int argc, char **argv, t_data *data)
 	if (check_args(argc, argv))
 		return (1);
 	data->nbr_philo = ft_atoi(argv[1]);
-	data->t_die = ft_atoi(argv[2]) * 1000;
+	data->t_die = ft_atoi(argv[2]);
 	data->t_eat = ft_atoi(argv[3]) * 1000;
 	data->t_sleep = ft_atoi(argv[4]) * 1000;
 	data->philo_ate_all_meals = 0;
+	data->all_alive = true;
 	data->philo_order = malloc(sizeof(int) * data->nbr_philo);
 	if (pthread_mutex_init(&data->message, NULL) != 0)
 		return (1);

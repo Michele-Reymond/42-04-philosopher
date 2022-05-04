@@ -37,6 +37,7 @@ typedef struct s_data {
 	unsigned int	philo_ate_all_meals;
 	long int		start_time;
 	int				*philo_order;
+	bool			all_alive;
 	pthread_mutex_t	message;
 }	t_data;
 

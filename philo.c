@@ -26,12 +26,12 @@ int	main(int argc, char **argv)
 	philo = malloc(sizeof(t_philo) * data.nbr_philo);
 	if (philo_init(&data, philo))
 		return (EXIT_FAILURE);
-	if (philo_routine(&data, philo))
-		return (EXIT_FAILURE);
 	while (i < data.nbr_philo)
 	{
 		pthread_join(philo[i].thread, NULL);
 		pthread_mutex_destroy(&philo[i].r_fork);
+		pthread_mutex_destroy(&data.message);
+		pthread_detach(philo[i].thread);
 		i++;
 	}
 	free(philo);
