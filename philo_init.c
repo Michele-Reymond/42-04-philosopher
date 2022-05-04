@@ -22,6 +22,23 @@ long int	time_of_meal(long int start_time)
 	return (time_now);
 }
 
+void	write_range(int *range)
+{
+	int i;
+	char *a;
+
+	i = 0;
+	write(1, "\n", 1);
+	while (range[i])
+	{
+		a = ft_itoa(range[i]);
+		write(1, a, 1);
+		write(1, ", ", 2);
+		i++;
+	}
+	write(1, "\n", 1);
+}
+
 char	*time_str(long int start_time)
 {
 	char			*time_diff;
@@ -39,13 +56,15 @@ int	is_dead(t_data *data, t_philo *philo)
 	time = time_of_meal(data->start_time);
 
 	id = ft_itoa(philo->id);
-	if (time - philo->last_meal > data->t_die / 100)
+	if (time - philo->last_meal > data->t_die / 1000)
 	{
 		philo->alive = false;
 		eat_time = time_str(philo->data->start_time);
+		pthread_mutex_lock(&philo->data->message);
 		write(1, eat_time, ft_strlen(eat_time));
 		write(1, " philo dead here!!!\n", 19);
 		write(1, id, ft_strlen(id));
+		pthread_mutex_unlock(&philo->data->message);
 		exit(0);
 		return (1);
 	}
@@ -67,24 +86,20 @@ int	philo_routine(t_data *data, t_philo *philo)
 {
 	while (1)
 	{
-		if (data->philo_order[0] == philo->id) 
+		if (data->philo_order[data->nbr_philo - 1] != philo->id) 
+		{
+			take_forks(philo);
 			eat(philo);
-		else
-			usleep(10);
-		if (all_meals_eaten(data))
-			return (1);
-		if (is_dead(data, philo))
+		}
+		if (all_meals_eaten(data) || is_dead(data, philo))
 			return (1);
 		sleep_now(philo);
-		if (all_meals_eaten(data))
-			return (1);
-		if (is_dead(data, philo))
+		if (all_meals_eaten(data) || is_dead(data, philo))
 			return (1);
 		think(philo);
-		if (all_meals_eaten(data))
+		if (all_meals_eaten(data) || is_dead(data, philo))
 			return (1);
-		if (is_dead(data, philo))
-			return (1);
+		usleep(10);
 	}
 	return (0);
 }
@@ -111,12 +126,10 @@ void	update_order(int *order, int id, unsigned int nbr_p)
 	order[i] = tmp;
 }
 
-void	eat(t_philo *philo)
+void	take_forks(t_philo *philo)
 {
 	char	*id;
-	char	*eaten;
 	char	*time;
-	char	*eat_time;
 
 	id = ft_itoa(philo->id);
 	pthread_mutex_lock(&philo->r_fork);
@@ -128,7 +141,21 @@ void	eat(t_philo *philo)
 	write(1, "	Philosopher n° ", 16);
 	write(1, id, ft_strlen(id));
 	write(1, "	 took is right and left fork\n", 30);
+	pthread_mutex_unlock(&philo->data->message);
+	free(id);
+	free(time);
+}
+
+
+void	eat(t_philo *philo)
+{
+	char	*id;
+	char	*eaten;
+	char	*eat_time;
+
+	id = ft_itoa(philo->id);
 	eat_time = time_str(philo->data->start_time);
+	pthread_mutex_lock(&philo->data->message);
 	write(1, eat_time, ft_strlen(eat_time));
 	write(1, "	Philosopher n° ", 16);
 	write(1, id, ft_strlen(id));
@@ -141,12 +168,11 @@ void	eat(t_philo *philo)
 	write(1, " meal\n", 6);
 	if (philo->meals_eaten == philo->data->must_eat)
 		philo->data->philo_ate_all_meals += 1;
+	pthread_mutex_unlock(&philo->data->message);
 	usleep(philo->data->t_eat);
 	pthread_mutex_unlock(&philo->l_fork);
 	pthread_mutex_unlock(&philo->r_fork);
-	pthread_mutex_unlock(&philo->data->message);
 	free(id);
-	free(time);
 	free(eaten);
 	free(eat_time);
 	usleep(10);
@@ -164,8 +190,8 @@ void	sleep_now(t_philo *philo)
 	write(1, "	Philosopher n° ", 16);
 	write(1, id, ft_strlen(id));
 	write(1, "	 is sleeping\n", 14);
-	usleep(philo->data->t_sleep);
 	pthread_mutex_unlock(&philo->data->message);
+	usleep(philo->data->t_sleep);
 	free(id);
 	free(time);
 }
@@ -258,7 +284,7 @@ int	philo_init(t_data *data, t_philo *philo)
 	i = 0;
 	while (i < data->nbr_philo)
 	{
-		if (philo->id % 2 == 0)
+		if (philo[i].id % 2 == 0)
 		{
 			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
 				return (1);		
@@ -266,11 +292,11 @@ int	philo_init(t_data *data, t_philo *philo)
 		i++;
 	}
 	i = 0;
+	usleep(10);
 	while (i < data->nbr_philo)
 	{
-		if (philo->id % 2 != 0)
+		if (philo[i].id % 2 != 0)
 		{
-		
 			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
 				return (1);		
 		}

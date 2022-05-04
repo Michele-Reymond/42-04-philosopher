@@ -71,6 +71,7 @@ int			philo_routine(t_data *data, t_philo *philo);
 void		eat(t_philo *philo);
 void		think(t_philo *philo);
 void		sleep_now(t_philo *philo);
+void		take_forks(t_philo *philo);
 
 #endif
 
