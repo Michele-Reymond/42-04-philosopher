@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/04 22:59:30 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/05 16:37:48 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define ORANGE		"\033[0;33m"
 
 # define PHILO		" 	Philo n°"
-# define TOOK_FORK	" 	took both fork\n"
+# define TOOK_FORK	" 	take a fork\n"
 # define EAT		" 	is eating his "
 # define MEALS		" meal\n"
 # define THINK		" 	is thinking\n"
@@ -56,8 +56,8 @@ typedef struct s_philo {
 	int				id;
 	long int		last_meal;
 	unsigned int	meals_eaten;
-	pthread_mutex_t	r_fork;
-	pthread_mutex_t	l_fork;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*l_fork;
 	pthread_t		thread;
 	t_data			*data;
 	bool			alive;

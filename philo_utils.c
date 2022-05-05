@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/04 23:15:51 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/05 16:22:22 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	update_order(int *order, int id, unsigned int nbr_p)
 	int	tmp;
 
 	i = 0;
+	if (nbr_p == 1)
+		return ;
 	tmp = order[nbr_p - 1];
 	while (i < nbr_p)
 	{

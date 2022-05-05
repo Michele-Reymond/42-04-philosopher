@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:24:52 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/04 23:19:28 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/05 16:46:03 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	philo_routine(t_data *data, t_philo *philo)
 {
 	while (1)
 	{
-		if (data->philo_order[data->nbr_philo - 1] != philo->id && data->all_alive == true) 
+		if ((data->philo_order[data->nbr_philo - 1] != philo->id || data->nbr_philo == 1) && data->all_alive == true) 
 		{
 			take_forks(philo);
 			eat(philo);
@@ -91,15 +91,21 @@ int	philo_init(t_data *data, t_philo *philo)
 		philo[i].data = data;
 		philo[i].data->philo_order[i] = philo[i].id;
 		philo[i].meals_eaten = 0;
-		if (pthread_mutex_init(&philo[i].r_fork, NULL) != 0)
+		philo[i].r_fork = malloc(sizeof(pthread_mutex_t));
+		if (pthread_mutex_init(philo[i].r_fork, NULL) != 0)
 			return (1);
 		i++;
 	}
-	i = 0;
+	i = 0; 
 	while (i < data->nbr_philo)
 	{
 		if (i == 0)
-			philo[i].l_fork = philo[data->nbr_philo - 1].r_fork;
+		{
+			if (data->nbr_philo == 1)
+				philo[i].l_fork = philo[i].r_fork;
+			else
+				philo[i].l_fork = philo[data->nbr_philo - 1].r_fork;
+		}
 		else
 			philo[i].l_fork = philo[i - 1].r_fork;
 		i++;

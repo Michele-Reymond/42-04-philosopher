@@ -6,7 +6,7 @@
 #    By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/20 16:45:53 by mreymond          #+#    #+#              #
-#    Updated: 2022/05/04 23:08:09 by mreymond         ###   ########.fr        #
+#    Updated: 2022/05/05 16:47:22 by mreymond         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) $(OBJS) -lpthread -L $(PRINTF_PATH) -lftprintf -o $(NAME)
 
 run:	
-			./$(NAME) 4 300 200 200
+			./$(NAME) 1 800 200 200
 
 clean:
 			$(RM) $(OBJS)
