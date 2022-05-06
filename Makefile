@@ -6,7 +6,7 @@
 #    By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/20 16:45:53 by mreymond          #+#    #+#              #
-#    Updated: 2022/05/05 16:47:22 by mreymond         ###   ########.fr        #
+#    Updated: 2022/05/06 11:44:30 by mreymond         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) $(OBJS) -lpthread -L $(PRINTF_PATH) -lftprintf -o $(NAME)
 
 run:	
-			./$(NAME) 1 800 200 200
+			./$(NAME) 4 410 200 100
 
 clean:
 			$(RM) $(OBJS)
@@ -48,10 +48,3 @@ fclean:		clean
 re:			fclean all
 
 .PHONY:		all clean fclean re run
-
-# FONCTIONE AUTORISEES
-# memset, printf, malloc, free, write,
-# usleep, gettimeofday, pthread_create,
-# pthread_detach, pthread_join, pthread_mutex_init,
-# pthread_mutex_destroy, pthread_mutex_lock,
-# pthread_mutex_unlock

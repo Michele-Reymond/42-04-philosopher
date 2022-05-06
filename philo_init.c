@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:24:52 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/05 16:46:03 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 11:47:34 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,24 @@ int	philo_routine(t_data *data, t_philo *philo)
 {
 	while (1)
 	{
-		if ((data->philo_order[data->nbr_philo - 1] != philo->id || data->nbr_philo == 1) && data->all_alive == true) 
+		if ((data->philo_order[data->nbr_philo - 1] != philo->id || data->nbr_philo < 3) && data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
 		{
 			take_forks(philo);
 			eat(philo);
 		}
-		if (data->all_alive == false || all_meals_eaten(data) || is_dead(data, philo) || data->philo_ate_all_meals > data->nbr_philo)
+		if (is_dead(data, philo) || all_meals_eaten(data))
 		{
 			return (1);
 		}
-		if (data->all_alive == true) 
+		if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
 			sleep_now(philo);
-		if (data->all_alive == false || all_meals_eaten(data) || is_dead(data, philo) || data->philo_ate_all_meals > data->nbr_philo)
+		if (is_dead(data, philo) || all_meals_eaten(data))
 		{
 			return (1);
 		}
-		if (data->all_alive == true) 
+		if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
 			think(philo);
-		if (data->all_alive == false || all_meals_eaten(data) || is_dead(data, philo) || data->philo_ate_all_meals > data->nbr_philo)
+		if (is_dead(data, philo) || all_meals_eaten(data))
 		{
 			return (1);
 		}
@@ -74,6 +74,23 @@ int	args_to_data(int argc, char **argv, t_data *data)
 		return (1);
 	else
 		data->must_eat = 0;
+	return (0);
+}
+
+int	death(t_data *data, t_philo *philo)
+{
+	unsigned int i;
+
+	while (1)
+	{
+		i = 0;
+		while (i < data->nbr_philo)
+		{
+			if (is_dead(data, &philo[i]) || all_meals_eaten(data))
+				return (1);
+			i++;			
+		}
+	}
 	return (0);
 }
 
@@ -132,5 +149,7 @@ int	philo_init(t_data *data, t_philo *philo)
 		}
 		i++;
 	}
+	if (death(data, philo))
+		return (1);
 	return (0);
 }

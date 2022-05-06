@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/05 16:48:20 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 11:50:49 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@ int	main(int argc, char **argv)
 	if (args_to_data(argc, argv, &data))
 		return (EXIT_FAILURE);
 	philo = malloc(sizeof(t_philo) * data.nbr_philo);
-	if (philo_init(&data, philo))
-		return (EXIT_FAILURE);
+	philo_init(&data, philo);
 	while (i < data.nbr_philo)
 	{
-		pthread_join(philo[i].thread, NULL);
-		pthread_mutex_destroy(philo[i].r_fork);
-		pthread_mutex_destroy(&data.message);
+		// pthread_join(philo[i].thread, NULL);
 		pthread_detach(philo[i].thread);
+		pthread_mutex_destroy(philo[i].r_fork);
 		i++;
 	}
+	pthread_mutex_destroy(&data.message);
 	free(philo);
 	return (EXIT_SUCCESS);
 }

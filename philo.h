@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/05 16:37:48 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 10:17:53 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define THINK		" 	is thinking\n"
 # define SLEEP		" 	is sleeping\n"
 # define DEAD		" 	Oops it appear that this philo is dead!\n"
-# define ALL_ATED	"All the Philos ated "
+# define ALL_ATED	"	All the Philos ated "
 # define LEAVE		" meals and they leave!\n"
 
 typedef struct s_data {
