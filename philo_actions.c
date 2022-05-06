@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 21:47:09 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 16:58:06 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 17:04:38 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	eat(t_philo *philo)
 	if (philo->meals_eaten == philo->data->must_eat)
 		philo->data->philo_ate_all_meals += 1;
 	update_order(philo->data->philo_order, philo->id, philo->data->nbr_philo);
-	philo->last_meal = time_of_meal(t) + 1;
+	philo->last_meal = time_of_meal(t);
 	usleep(philo->data->t_eat);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);

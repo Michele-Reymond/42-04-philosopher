@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 21:48:56 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 16:59:52 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 17:04:30 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_dead(t_data *data, t_philo *philo)
 	long int	time;
 
 	time = time_of_meal(data->start_time);
-	if (time - philo->last_meal > data->t_die && data->all_alive == true && philo->eat == false)
+	if (time - philo->last_meal > data->t_die + 1 && data->all_alive == true && philo->eat == false)
 	{
 		pthread_mutex_lock(&philo->data->message);
 		philo->alive = false;
