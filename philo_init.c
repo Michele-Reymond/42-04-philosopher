@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:24:52 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 11:47:34 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 16:43:05 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,36 @@
 
 int	philo_routine(t_data *data, t_philo *philo)
 {
-	while (1)
+
+	while (data->all_alive)
 	{
-		if ((data->philo_order[data->nbr_philo - 1] != philo->id || data->nbr_philo < 3) && data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
-		{
-			take_forks(philo);
-			eat(philo);
-		}
-		if (is_dead(data, philo) || all_meals_eaten(data))
-		{
-			return (1);
-		}
-		if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
-			sleep_now(philo);
-		if (is_dead(data, philo) || all_meals_eaten(data))
-		{
-			return (1);
-		}
-		if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
-			think(philo);
-		if (is_dead(data, philo) || all_meals_eaten(data))
-		{
-			return (1);
-		}
-		usleep(10);
+		take_forks(philo);
+		eat(philo);
+		sleep_now(philo);
+		think(philo);
 	}
-	return (0);
+	return (1);
+
+	// while (1)
+	// {
+	// 	if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
+	// 	{
+	// 		if (data->philo_order[0] == philo->id || data->philo_order[1] == philo->id || philo->last_meal == 0)
+	// 		{
+	// 			take_forks(philo);
+	// 			if (data->all_alive == true && !(is_dead(data, philo))) 
+	// 				eat(philo);
+	// 		}
+	// 	}
+	// 	if (is_dead(data, philo) || all_meals_eaten(data))
+	// 		return (1);
+	// 	else if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
+	// 	{
+	// 		sleep_now(philo);
+	// 		if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
+	// 			think(philo);
+	// 	}
+	// }
 }
 
 void	*try_to_eat(void *arg)
@@ -67,6 +71,8 @@ int	args_to_data(int argc, char **argv, t_data *data)
 	data->all_alive = true;
 	data->philo_order = malloc(sizeof(int) * data->nbr_philo);
 	if (pthread_mutex_init(&data->message, NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(&data->death, NULL) != 0)
 		return (1);
 	if (argc == 6)
 		data->must_eat = ft_atoi(argv[5]);
@@ -105,6 +111,7 @@ int	philo_init(t_data *data, t_philo *philo)
 		philo[i].id = i + 1;
 		philo[i].last_meal = 0;
 		philo[i].alive = true;
+		philo[i].eat = false;
 		philo[i].data = data;
 		philo[i].data->philo_order[i] = philo[i].id;
 		philo[i].meals_eaten = 0;
@@ -134,10 +141,10 @@ int	philo_init(t_data *data, t_philo *philo)
 		{
 			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
 				return (1);	
-			usleep(1000);	
 		}
 		i++;
 	}
+	usleep(1000);
 	i = 0;
 	while (i < data->nbr_philo)
 	{
@@ -145,7 +152,6 @@ int	philo_init(t_data *data, t_philo *philo)
 		{
 			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
 				return (1);	
-			usleep(1000);	
 		}
 		i++;
 	}

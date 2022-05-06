@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 10:17:53 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 14:15:41 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_data {
 	int				*philo_order;
 	bool			all_alive;
 	pthread_mutex_t	message;
+	pthread_mutex_t	death;
 }	t_data;
 
 // philosophes
@@ -61,6 +62,7 @@ typedef struct s_philo {
 	pthread_t		thread;
 	t_data			*data;
 	bool			alive;
+	bool			eat;
 }	t_philo;
 
 int			ft_isdigit(int d);

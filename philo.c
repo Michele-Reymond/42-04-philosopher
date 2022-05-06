@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 11:50:49 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/06 13:47:44 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_destroy(philo[i].r_fork);
 		i++;
 	}
+	pthread_mutex_destroy(&data.death);
 	pthread_mutex_destroy(&data.message);
 	free(philo);
 	return (EXIT_SUCCESS);
