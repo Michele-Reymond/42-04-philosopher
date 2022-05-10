@@ -6,68 +6,11 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:24:52 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 11:43:34 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/10 14:55:43 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int check_state(t_data *data)
-{
-	if (data->all_alive || data->philo_ate_all_meals < data->nbr_philo)
-		return (0);
-	return (1);
-}
-
-int	philo_routine(t_data *data, t_philo *philo)
-{
-
-	while (1)
-	{
-		if (!check_state(data))
-			take_forks(philo);
-		if (!check_state(data))
-			eat(philo);
-		if (!check_state(data))
-			sleep_now(philo);
-		if (!check_state(data))
-			think(philo);
-		if (check_state(data))
-			return (1);
-	}
-
-	// while (1)
-	// {
-	// 	if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
-	// 	{
-	// 		if (data->philo_order[0] == philo->id || data->philo_order[1] == philo->id || philo->last_meal == 0)
-	// 		{
-	// 			take_forks(philo);
-	// 			if (data->all_alive == true && !(is_dead(data, philo))) 
-	// 				eat(philo);
-	// 		}
-	// 	}
-	// 	if (is_dead(data, philo) || all_meals_eaten(data))
-	// 		return (1);
-	// 	else if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
-	// 	{
-	// 		sleep_now(philo);
-	// 		if (data->all_alive == true && (philo->meals_eaten < data->must_eat || data->must_eat == 0)) 
-	// 			think(philo);
-	// 	}
-	// }
-}
-
-void	*try_to_eat(void *arg)
-{
-	t_data		*data;
-	t_philo		*philo;
-
-	philo = (t_philo *)arg;
-	data = philo->data;
-	philo_routine(data, philo);
-	return (NULL);
-}
 
 int	args_to_data(int argc, char **argv, t_data *data)
 {
@@ -81,7 +24,6 @@ int	args_to_data(int argc, char **argv, t_data *data)
 		return (0);
 	data->philo_ate_all_meals = 0;
 	data->all_alive = true;
-	// data->philo_order = malloc(sizeof(int) * data->nbr_philo);
 	if (pthread_mutex_init(&data->message, NULL) != 0)
 		return (1);
 	if (pthread_mutex_init(&data->death, NULL) != 0)
@@ -95,43 +37,11 @@ int	args_to_data(int argc, char **argv, t_data *data)
 	return (0);
 }
 
-int	death(t_data *data, t_philo *philo)
-{
-	unsigned int i;
-
-	while (1)
-	{
-		i = 0;
-		while (i < data->nbr_philo)
-		{
-			if (is_dead(data, &philo[i]) || all_meals_eaten(data))
-				return (1);
-			i++;			
-		}
-	}
-	return (0);
-}
-
-int	philo_init(t_data *data, t_philo *philo)
+void	find_left_fork(t_data *data, t_philo *philo)
 {
 	unsigned int	i;
 
 	i = 0;
-	while (i < data->nbr_philo)
-	{
-		philo[i].id = i + 1;
-		philo[i].last_meal = 0;
-		philo[i].alive = true;
-		philo[i].eat = false;
-		philo[i].data = data;
-		// philo[i].data->philo_order[i] = philo[i].id;
-		philo[i].meals_eaten = 0;
-		philo[i].r_fork = malloc(sizeof(pthread_mutex_t));
-		if (pthread_mutex_init(philo[i].r_fork, NULL) != 0)
-			return (1);
-		i++;
-	}
-	i = 0; 
 	while (i < data->nbr_philo)
 	{
 		if (i == 0)
@@ -145,28 +55,29 @@ int	philo_init(t_data *data, t_philo *philo)
 			philo[i].l_fork = philo[i - 1].r_fork;
 		i++;
 	}
+}
+
+int	philo_init(t_data *data, t_philo *philo)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < data->nbr_philo)
+	{
+		philo[i].id = i + 1;
+		philo[i].last_meal = 0;
+		philo[i].alive = true;
+		philo[i].data = data;
+		philo[i].meals_eaten = 0;
+		philo[i].r_fork = malloc(sizeof(pthread_mutex_t));
+		if (pthread_mutex_init(philo[i].r_fork, NULL) != 0)
+			return (1);
+		i++;
+	}
+	find_left_fork(data, philo);
 	timer_start(data);
-	i = 0;
-	while (i < data->nbr_philo)
-	{
-		if (philo[i].id % 2 == 0)
-		{
-			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
-				return (1);	
-		}
-		i++;
-	}
-	usleep(10);
-	i = 0;
-	while (i < data->nbr_philo)
-	{
-		if (philo[i].id % 2 != 0)
-		{
-			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
-				return (1);	
-		}
-		i++;
-	}
+	if (launch_philos(data, philo))
+		return (1);
 	if (death(data, philo))
 		return (1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 10:18:36 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/10 14:57:04 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_data {
 	unsigned int	must_eat;
 	unsigned int	philo_ate_all_meals;
 	long int		start_time;
-	// int				*philo_order;
 	bool			all_alive;
 	pthread_mutex_t	message;
 	pthread_mutex_t	death;
@@ -62,7 +61,6 @@ typedef struct s_philo {
 	pthread_t		thread;
 	t_data			*data;
 	bool			alive;
-	bool			eat;
 }	t_philo;
 
 int			ft_isdigit(int d);
@@ -89,6 +87,10 @@ int			all_meals_eaten(t_data *data);
 int			is_dead(t_data *data, t_philo *philo);
 void		timer_start(t_data *data);
 void		update_order(int *order, int id, unsigned int nbr_p);
+long int	what_time_is_it();
+void		ft_usleep(int sleep);
+int			death(t_data *data, t_philo *philo);
+int			launch_philos(t_data *data, t_philo *philo);
 
 #endif
 
