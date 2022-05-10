@@ -6,23 +6,35 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:24:52 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 16:43:05 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/10 11:43:34 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int check_state(t_data *data)
+{
+	if (data->all_alive || data->philo_ate_all_meals < data->nbr_philo)
+		return (0);
+	return (1);
+}
+
 int	philo_routine(t_data *data, t_philo *philo)
 {
 
-	while (data->all_alive)
+	while (1)
 	{
-		take_forks(philo);
-		eat(philo);
-		sleep_now(philo);
-		think(philo);
+		if (!check_state(data))
+			take_forks(philo);
+		if (!check_state(data))
+			eat(philo);
+		if (!check_state(data))
+			sleep_now(philo);
+		if (!check_state(data))
+			think(philo);
+		if (check_state(data))
+			return (1);
 	}
-	return (1);
 
 	// while (1)
 	// {
@@ -69,7 +81,7 @@ int	args_to_data(int argc, char **argv, t_data *data)
 		return (0);
 	data->philo_ate_all_meals = 0;
 	data->all_alive = true;
-	data->philo_order = malloc(sizeof(int) * data->nbr_philo);
+	// data->philo_order = malloc(sizeof(int) * data->nbr_philo);
 	if (pthread_mutex_init(&data->message, NULL) != 0)
 		return (1);
 	if (pthread_mutex_init(&data->death, NULL) != 0)
@@ -105,7 +117,6 @@ int	philo_init(t_data *data, t_philo *philo)
 	unsigned int	i;
 
 	i = 0;
-	timer_start(data);
 	while (i < data->nbr_philo)
 	{
 		philo[i].id = i + 1;
@@ -113,7 +124,7 @@ int	philo_init(t_data *data, t_philo *philo)
 		philo[i].alive = true;
 		philo[i].eat = false;
 		philo[i].data = data;
-		philo[i].data->philo_order[i] = philo[i].id;
+		// philo[i].data->philo_order[i] = philo[i].id;
 		philo[i].meals_eaten = 0;
 		philo[i].r_fork = malloc(sizeof(pthread_mutex_t));
 		if (pthread_mutex_init(philo[i].r_fork, NULL) != 0)
@@ -134,6 +145,7 @@ int	philo_init(t_data *data, t_philo *philo)
 			philo[i].l_fork = philo[i - 1].r_fork;
 		i++;
 	}
+	timer_start(data);
 	i = 0;
 	while (i < data->nbr_philo)
 	{
@@ -144,7 +156,7 @@ int	philo_init(t_data *data, t_philo *philo)
 		}
 		i++;
 	}
-	usleep(1000);
+	usleep(10);
 	i = 0;
 	while (i < data->nbr_philo)
 	{

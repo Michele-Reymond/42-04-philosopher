@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 13:47:44 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/10 10:10:20 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char **argv)
 	philo_init(&data, philo);
 	while (i < data.nbr_philo)
 	{
-		// pthread_join(philo[i].thread, NULL);
 		pthread_detach(philo[i].thread);
 		pthread_mutex_destroy(philo[i].r_fork);
 		i++;

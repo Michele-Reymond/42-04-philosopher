@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 14:15:41 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/10 10:18:36 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_data {
 	unsigned int	must_eat;
 	unsigned int	philo_ate_all_meals;
 	long int		start_time;
-	int				*philo_order;
+	// int				*philo_order;
 	bool			all_alive;
 	pthread_mutex_t	message;
 	pthread_mutex_t	death;

@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/06 16:05:38 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/10 11:34:01 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void timer_start(t_data *data)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	data-> start_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	data->start_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 }
 
 char	*time_str(long int start_time)
