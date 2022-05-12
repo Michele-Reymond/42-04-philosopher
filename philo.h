@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/12 13:12:09 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 14:46:50 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,22 @@ int			args_is_digit(int argc, char **argv);
 int			args_max_min(int argc, char **argv);
 int			check_args(int argc, char **argv);
 int			check_errors(int argc, char **argv);
-void		*test(void *arg);
-int			philo_init(t_data *data, t_philo *philo);
-void		datafree(t_data *data, t_philo *philo);
-char		*time_str(long int start_time);
-long int	time_of_meal(long int start_time);
 int			philo_routine(t_data *data, t_philo *philo);
+int			check_state(t_data *data);
+void		*try_to_eat(void *arg);
 void		eat(t_philo *philo);
 void		think(t_philo *philo);
 void		sleep_now(t_philo *philo);
 void		take_forks(t_philo *philo);
+int			philo_init(t_data *data, t_philo *philo);
+void		find_left_fork(t_data *data, t_philo *philo);
+int			launch_philos(t_data *data, t_philo *philo);
+long int	time_of_meal(long int start_time);
+void		timer_start(t_data *data);
+long int	what_time_is_it();
 int			all_meals_eaten(t_data *data);
 int			is_dead(t_data *data, t_philo *philo);
-void		timer_start(t_data *data);
-void		update_order(int *order, int id, unsigned int nbr_p);
-long int	what_time_is_it();
 void		ft_usleep(int sleep);
 int			death(t_data *data, t_philo *philo);
-int			launch_philos(t_data *data, t_philo *philo);
 
 #endif

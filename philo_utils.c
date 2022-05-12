@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 14:43:59 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 14:41:09 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,4 @@ void timer_start(t_data *data)
 
 	gettimeofday(&time, NULL);
 	data->start_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-}
-
-char	*time_str(long int start_time)
-{
-	char			*time_diff;
-
-	time_diff = ft_itoa(time_of_meal(start_time));
-	return (time_diff);
 }
