@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:22 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 14:57:04 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 13:12:09 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct s_data {
 	long int		start_time;
 	bool			all_alive;
 	pthread_mutex_t	message;
-	pthread_mutex_t	death;
 }	t_data;
 
 // philosophes
@@ -93,6 +92,3 @@ int			death(t_data *data, t_philo *philo);
 int			launch_philos(t_data *data, t_philo *philo);
 
 #endif
-
-// MALLOC
-// dans la fonction args_to_data

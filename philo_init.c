@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:24:52 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 14:55:43 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 13:10:14 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int	args_to_data(int argc, char **argv, t_data *data)
 	data->philo_ate_all_meals = 0;
 	data->all_alive = true;
 	if (pthread_mutex_init(&data->message, NULL) != 0)
-		return (1);
-	if (pthread_mutex_init(&data->death, NULL) != 0)
 		return (1);
 	if (argc == 6)
 		data->must_eat = ft_atoi(argv[5]);

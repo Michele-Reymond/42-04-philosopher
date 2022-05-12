@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 10:10:20 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 13:16:20 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ int	main(int argc, char **argv)
 	{
 		pthread_detach(philo[i].thread);
 		pthread_mutex_destroy(philo[i].r_fork);
+		free(philo[i].r_fork);
 		i++;
 	}
-	pthread_mutex_destroy(&data.death);
 	pthread_mutex_destroy(&data.message);
 	free(philo);
 	return (EXIT_SUCCESS);
 }
-
-
-// free la fork to do
