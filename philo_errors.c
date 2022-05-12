@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:23:46 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/02 14:10:21 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 16:00:02 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	check_argc(int argc)
 {
 	if (argc > 7)
 	{
-		ft_printf("(Error) Too much arguments\n");
+		printf("(Error) Too much arguments\n");
 		return (1);
 	}
 	else if (argc < 5)
 	{
-		ft_printf("(Error) Too few arguments\n");
+		printf("(Error) Too few arguments\n");
 		return (1);
 	}
 	return (0);
@@ -67,12 +67,12 @@ int	check_args(int argc, char **argv)
 {
 	if (args_is_digit(argc, argv))
 	{
-		ft_printf("(Error) There is a non-digit in arguments\n");
+		printf("(Error) There is a non-digit in arguments\n");
 		return (1);
 	}
 	if (args_max_min(argc, argv))
 	{
-		ft_printf("(Error) One or more argument(s) are greater than MAX\n");
+		printf("(Error) One or more argument(s) are greater than MAX\n");
 		return (1);
 	}
 	return (0);
@@ -82,12 +82,12 @@ int	check_errors(int argc, char **argv)
 {
 	if (args_is_digit(argc, argv))
 	{
-		ft_printf("(Error) There is a non-digit in arguments\n");
+		printf("(Error) There is a non-digit in arguments\n");
 		return (1);
 	}
 	if (args_max_min(argc, argv))
 	{
-		ft_printf("(Error) Arguments are greater than MAX\n");
+		printf("(Error) Arguments are greater than MAX\n");
 		return (1);
 	}
 	return (0);

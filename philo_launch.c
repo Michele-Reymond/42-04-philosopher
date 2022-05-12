@@ -6,17 +6,17 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:54:50 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/12 13:13:52 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:29:44 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int check_state(t_data *data)
+int	check_state(t_data *data)
 {
-	if (data->all_alive && (data->must_eat == 0 
-		|| data->philo_ate_all_meals < data->nbr_philo))
-			return (0);
+	if (data->all_alive && (data->must_eat == 0
+			|| data->philo_ate_all_meals < data->nbr_philo))
+		return (0);
 	return (1);
 }
 
@@ -36,7 +36,7 @@ int	philo_routine(t_data *data, t_philo *philo)
 	return (1);
 }
 
-void	*try_to_eat(void *arg)
+void	*launch(void *arg)
 {
 	t_data		*data;
 	t_philo		*philo;
@@ -47,7 +47,7 @@ void	*try_to_eat(void *arg)
 	return (NULL);
 }
 
-int launch_philos(t_data *data, t_philo *philo)
+int	launch_philos(t_data *data, t_philo *philo)
 {
 	unsigned int	i;
 
@@ -56,8 +56,8 @@ int launch_philos(t_data *data, t_philo *philo)
 	{
 		if (philo[i].id % 2 == 0)
 		{
-			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
-				return (1);	
+			if (pthread_create(&philo[i].thread, NULL, launch, &philo[i]) != 0)
+				return (1);
 		}
 		i++;
 	}
@@ -67,8 +67,8 @@ int launch_philos(t_data *data, t_philo *philo)
 	{
 		if (philo[i].id % 2 != 0)
 		{
-			if (pthread_create(&philo[i].thread, NULL, try_to_eat, &philo[i]) != 0)
-				return (1);	
+			if (pthread_create(&philo[i].thread, NULL, launch, &philo[i]) != 0)
+				return (1);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 21:48:56 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 14:53:40 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:33:59 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_dead(t_data *data, t_philo *philo)
 		philo->alive = false;
 		data->all_alive = false;
 		ft_usleep(100);
-		printf(RED "%ld%s%d%s", time, PHILO, philo->id, DEAD); 
+		printf(RED "%ld%s%d%s", time, PHILO, philo->id, DEAD);
 		pthread_mutex_unlock(&philo->data->message);
 		return (1);
 	}
@@ -33,14 +33,14 @@ int	is_dead(t_data *data, t_philo *philo)
 int	all_meals_eaten(t_data *data)
 {
 	long int	time;
-	
+
 	time = time_of_meal(data->start_time);
 	if (data->philo_ate_all_meals == data->nbr_philo)
 	{
 		data->philo_ate_all_meals += 1;
-		ft_usleep(100);
+		ft_usleep(1000);
 		pthread_mutex_lock(&(data->message));
-		printf(ORANGE "%ld%s%d%s",  time, ALL_ATED, data->must_eat, LEAVE); 
+		printf(ORANGE "%ld%s%d%s", time, ALL_ATED, data->must_eat, LEAVE);
 		pthread_mutex_unlock(&(data->message));
 		return (1);
 	}
@@ -49,7 +49,7 @@ int	all_meals_eaten(t_data *data)
 
 int	death(t_data *data, t_philo *philo)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	while (1)
 	{
@@ -58,7 +58,7 @@ int	death(t_data *data, t_philo *philo)
 		{
 			if (is_dead(data, &philo[i]) || all_meals_eaten(data))
 				return (1);
-			i++;			
+			i++;
 		}
 	}
 	return (0);

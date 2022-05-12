@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:37:00 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/12 14:41:09 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:27:21 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ long int	time_of_meal(long int start_time)
 	return (time_now);
 }
 
-long int	what_time_is_it()
+long int	what_time_is_it(void)
 {
 	struct timeval	time;
 	long int		time_now;
@@ -32,7 +32,7 @@ long int	what_time_is_it()
 	return (time_now);
 }
 
-void timer_start(t_data *data)
+void	timer_start(t_data *data)
 {
 	struct timeval	time;
 

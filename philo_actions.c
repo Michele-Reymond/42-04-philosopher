@@ -6,7 +6,7 @@
 /*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 21:47:09 by mreymond          #+#    #+#             */
-/*   Updated: 2022/05/10 14:45:26 by mreymond         ###   ########.fr       */
+/*   Updated: 2022/05/12 15:26:00 by mreymond         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	take_forks(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->message);
 	pthread_mutex_lock(philo->l_fork);
 	pthread_mutex_lock(&philo->data->message);
-	printf(CYAN "%ld%s%d%s", time_of_meal(t), PHILO, philo->id, TOOK_FORK); 
+	printf(CYAN "%ld%s%d%s", time_of_meal(t), PHILO, philo->id, TOOK_FORK);
 	pthread_mutex_unlock(&philo->data->message);
 }
 
@@ -42,8 +42,8 @@ void	eat(t_philo *philo)
 
 	t = philo->data->start_time;
 	pthread_mutex_lock(&philo->data->message);
-    printf(GREEN "%ld%s%d%s%d%s", time_of_meal(t), PHILO, 
-        philo->id, EAT, philo->meals_eaten + 1, MEALS); 
+	printf(GREEN "%ld%s%d%s%d%s", time_of_meal(t), PHILO,
+		philo->id, EAT, philo->meals_eaten + 1, MEALS);
 	pthread_mutex_unlock(&philo->data->message);
 	philo->meals_eaten += 1;
 	if (philo->meals_eaten == philo->data->must_eat)
@@ -60,7 +60,7 @@ void	think(t_philo *philo)
 
 	t = philo->data->start_time;
 	pthread_mutex_lock(&philo->data->message);
-    printf(DEFAULT "%ld%s%d%s", time_of_meal(t), PHILO, philo->id, THINK);
+	printf(DEFAULT "%ld%s%d%s", time_of_meal(t), PHILO, philo->id, THINK);
 	pthread_mutex_unlock(&philo->data->message);
 }
 
@@ -70,7 +70,7 @@ void	sleep_now(t_philo *philo)
 
 	t = philo->data->start_time;
 	pthread_mutex_lock(&philo->data->message);
-    printf(DEFAULT "%ld%s%d%s", time_of_meal(t), PHILO, philo->id, SLEEP); 
+	printf(DEFAULT "%ld%s%d%s", time_of_meal(t), PHILO, philo->id, SLEEP);
 	pthread_mutex_unlock(&philo->data->message);
 	ft_usleep(philo->data->t_sleep);
 }
